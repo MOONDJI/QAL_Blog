@@ -18,6 +18,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 100);
             $table->text('description') ->nullable();
             $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('votes')->default(0);
             $table->timestamps();
         });
     }
