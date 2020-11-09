@@ -13,9 +13,15 @@
         <tbody>
             @foreach($categories as $category)
                 <tr>
-                    <th><a href="categories/{{$category->id}}">{{$category->name}}</a></th>
-                    <th><button>Edit</button></th>
-                    <th><button>Delete</button></th>
+                    <th><a href="{{route('admin.categories.show', $category->id)}}">{{$category->name}}</a></th>
+                    <th><a href="{{route('admin.categories.edit', $category->id)}}">Edit</a></th>
+                    <th>
+                        <form method="POST" action="{{route('admin.categories.destroy', $category->id)}}">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit">Delete</button>
+                        </form>
+                    </th>
                 </tr>
             @endforeach
         </tbody>

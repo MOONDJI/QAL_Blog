@@ -27,7 +27,7 @@ class PostController extends Controller
         //     ['title', 'like', 'A%'],
         // ])->get();
 
-        dump($posts);
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -37,7 +37,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = DB::table('categories')->orderBy('id', 'desc')->get();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -48,7 +49,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::table('posts')->insert([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'category_id' => $request['category'],
+            'user_id' => 1,
+            'created_at' => now()
+        ]);
+
+        return redirect(route('admin.posts.index'));
     }
 
     /**
@@ -61,7 +70,7 @@ class PostController extends Controller
     {
         $post = DB::table('posts')->where('id', $id)->first(); //более правильный по sql запросу
         // $post = DB::table('posts')->find($id);
-        dump($post);
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -72,7 +81,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = DB::table('categories')->orderBy('id', 'desc')->get();
+        $post = DB::table('posts')->where('id', $id)->first();
+        return view('admin.posts.edit', compact('categories', 'post'));
     }
 
     /**
@@ -84,7 +95,15 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::table('posts')->where('id', $id)
+        ->update([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'category_id' => $request['category'],
+            'updated_at' => now()
+        ]);
+
+        return redirect(route('admin.posts.index'));
     }
 
     /**
@@ -95,6 +114,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('posts')->where('id', $id)->delete();
+
+        return redirect(route('admin.posts.index'));
     }
 }

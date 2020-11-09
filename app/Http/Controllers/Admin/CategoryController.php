@@ -66,9 +66,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = DB::table('categories')->where('id', $id)->first();
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -78,9 +79,17 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update($id, Request $request)
     {
-        //
+        DB::table('categories')
+        ->where('id', $id)
+        ->update([
+            'name' => $request['name'],
+            'description' => $request['description'],
+            'updated_at' => now()
+        ]);
+
+        return redirect(route('admin.categories.index'));
     }
 
     /**
@@ -89,8 +98,9 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        DB::table('categories')->delete($id);
+        return redirect(route('admin.categories.index'));
     }
 }

@@ -22,11 +22,19 @@ Route::get('/main', function () {
 });
 
 Route::namespace('App\Http\Controllers')->name('blog.')->prefix('blog')->group(function(){
-    Route::resource('posts', 'BlogController');
-    Route::resource('post', 'BlogController');
+    Route::get('main', 'BlogController@index')->name('main');
+    Route::get('post/{id}', 'BlogController@showPost')->name('post');
+    Route::get('category/{id}', 'BlogController@showCategory')->name('category');
 });
 
-Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('cms')->group(function(){
+Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
 });
+
+// Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
+//     Route::put('posts/update/{id}', 'PostController@update')->name('posts.update');
+//     Route::resource('posts', 'PostController');
+//     Route::put('categories/update/{id}', 'CategoryController@update')->name('categories.update');
+//     Route::resource('categories', 'CategoryController');
+// });

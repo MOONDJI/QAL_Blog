@@ -22,28 +22,9 @@ class BlogController extends Controller
         ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
         ->get();
 
-        return view('blog.index', compact('title', 'posts'));
-    }
+        $categories = DB::table('categories')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-
+        return view('blog.index', compact('title', 'posts', 'categories'));
     }
 
     /**
@@ -52,9 +33,9 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showPost($id)
     {
-        $title = "Blog Page";
+        $title = "Blog Post Page";
         $post = DB::table('posts')
         ->join('categories', 'categories.id', '=', 'posts.category_id')
         ->join('users', 'users.id', '=', 'posts.user_id')
@@ -62,40 +43,21 @@ class BlogController extends Controller
         ->where('posts.id', $id)
         ->first();
 
-        return view('blog.show', compact('title', 'post'));
+        return view('blog.showPost', compact('title', 'post'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function showCategory($id)
     {
-        return view('admin.category.edit');
+        $title = "Blog Category Page";
+        $category = DB::table('categories')->where('id', $id)->first();
+
+        return view('blog.showCategory', compact('title', 'category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
