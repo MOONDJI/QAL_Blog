@@ -1,7 +1,7 @@
 <h2>Create Category</h2>
 
 <div>
-    <form action="" method="POST">
+    <form action="admin/categories" method="POST">
         @csrf
         <table>
             <tr>
