@@ -54,9 +54,10 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        $category = DB::table('categories')->where('id', $id)->first();
+        return view('admin.categories.show', compact('category'));
     }
 
     /**

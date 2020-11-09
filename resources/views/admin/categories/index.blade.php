@@ -13,7 +13,7 @@
         <tbody>
             @foreach($categories as $category)
                 <tr>
-                    <th>{{$category->name}}</th>
+                    <th><a href="categories/{{$category->id}}">{{$category->name}}</a></th>
                     <th><button>Edit</button></th>
                     <th><button>Delete</button></th>
                 </tr>
