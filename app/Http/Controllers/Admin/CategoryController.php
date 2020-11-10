@@ -17,8 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $title = "Categories";
+        $subtitle = "Menegment categories";
         $categories = DB::table('categories')->get();
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'title', 'subtitle'));
     }
 
     /**
@@ -28,7 +30,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        $title = "Category";
+        $subtitle = "Edit categiry";
+        return view('admin.categories.create', compact('title', 'subtitle'));
     }
 
     /**
@@ -56,8 +60,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
+        $title = "Category";
+        $subtitle = "Waching categiry";
         $category = DB::table('categories')->where('id', $id)->first();
-        return view('admin.categories.show', compact('category'));
+        return view('admin.categories.show', compact('category', 'title', 'subtitle'));
     }
 
     /**
@@ -68,8 +74,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        $title = "Category";
+        $subtitle = "Edit categiry";
         $category = DB::table('categories')->where('id', $id)->first();
-        return view('admin.categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category', 'title', 'subtitle'));
     }
 
     /**

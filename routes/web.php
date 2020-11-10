@@ -28,8 +28,10 @@ Route::namespace('App\Http\Controllers')->name('blog.')->prefix('blog')->group(f
 });
 
 Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
+    Route::get('/', 'DashboardController');
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
+    Route::resource('users', 'UserController');
 });
 
 // Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
