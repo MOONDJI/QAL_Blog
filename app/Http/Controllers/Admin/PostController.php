@@ -57,6 +57,9 @@ class PostController extends Controller
             'created_at' => now()
         ]);
 
+        // $post->create_at = "2020-11-11 20:20:20";
+        // $post->save(['timestamp' => false]);
+
         return redirect(route('admin.posts.index'));
     }
 

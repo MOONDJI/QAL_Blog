@@ -34,6 +34,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
     Route::resource('users', 'UserController');
 });
 
+Route::resource('profiles', 'App\Http\Controllers\ProfileController');
+
+
 // Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
 //     Route::put('posts/update/{id}', 'PostController@update')->name('posts.update');
 //     Route::resource('posts', 'PostController');
