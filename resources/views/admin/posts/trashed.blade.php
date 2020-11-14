@@ -10,7 +10,7 @@
 <div style="margin-bottom: 10px" class="row">
     <div class="col-lg-12">
         <strong>{{$subtitle}}</strong> <a href="{{route('admin.posts.create')}}" class="btn btn-success float-right">Add new posts</a>
-        <a href="{{route('admin.posts.trashed')}}" class="btn btn-danger float-right mr-1">Trashed posts</a>
+        <a href="{{route('admin.posts.index')}}" class="btn btn-secondary float-right mr-1">Go back</a>
     </div>
 </div>
 
@@ -56,27 +56,3 @@
 </div>
 
 @endsection
-
-
-{{-- <div>
-    <h1>Posts</h1>
-    <h2><a href="{{route('admin.posts.create')}}">New post</a></h2>
-    @foreach($posts as $post)
-    <div>
-        <h2><a href="{{route('admin.posts.show', $post->id)}}">{{$post->title}}</a></h2>
-        <p>Created at: <strong>{{$post->created_at}}</strong></p>
-        <table>
-            <tr>
-                <th><h3><a href="{{route('admin.posts.edit', $post->id)}}">Edit</a></h3></th>
-                <th>
-                    <form method="POST" action="{{route('admin.posts.destroy', $post->id)}}">
-                        @csrf
-                        @method('DELETE')
-                        <h3><button type="submit">Delete</button></h3>
-                    </form>
-                </th>
-            </tr>
-        </table>
-    </div>
-    @endforeach
-</div> --}}

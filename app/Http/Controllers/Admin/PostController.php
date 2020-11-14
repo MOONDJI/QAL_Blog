@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\{Category, Post};
 
 class PostController extends Controller
 {
@@ -16,7 +17,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = DB::table('posts')->orderBy('id', 'desc')->get();
+        $title="Posts";
+        $subtitle="Menagement posts";
+        // $posts = Post::all();
+        $posts = Post::paginate(10);
+        // $posts = DB::table('posts')->orderBy('id', 'desc')->get();
 
         // $posts = DB::table('posts')->latest()->get();
 
@@ -27,7 +32,7 @@ class PostController extends Controller
         //     ['title', 'like', 'A%'],
         // ])->get();
 
-        return view('admin.posts.index', compact('posts'));
+        return view('admin.posts.index', compact('posts', 'title', 'subtitle'));
     }
 
     /**
@@ -115,10 +120,32 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        DB::table('posts')->where('id', $id)->delete();
+        $post->delete();
+        // DB::table('posts')->where('id', $id)->delete();
 
         return redirect(route('admin.posts.index'));
+    }
+
+    public function trashed()
+    {
+        $title="Posts";
+        $subtitle="Menagement trashed posts";
+        $posts = Post::onlyTrashed()->paginate(5);
+
+        return view('admin.posts.trashed', compact('posts', 'title', 'subtitle'));
+    }
+
+    public function restore($id)
+    {
+        // $title="Posts";
+        // $subtitle="Menagement trashed posts";
+        // $posts = Post::onlyTrashed()->paginate(5);
+        Post::withTrashed()
+        ->where('id', $id)
+        ->first();
+
+        return view('admin.posts.trashed', compact('posts', 'title', 'subtitle'));
     }
 }

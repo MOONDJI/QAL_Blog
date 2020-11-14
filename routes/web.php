@@ -29,6 +29,10 @@ Route::namespace('App\Http\Controllers')->name('blog.')->prefix('blog')->group(f
 
 Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
     Route::get('/', 'DashboardController');
+    Route::get('posts/trashed', 'PostController@trashed')->name('posts.trashed');
+    Route::post('posts/restore/{id}', 'PostController@restore')->name('posts.restore');
+    Route::delete('posts/force/{id}', 'PostController@force')->name('posts.force');
+
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
     Route::resource('users', 'UserController');
