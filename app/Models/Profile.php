@@ -12,10 +12,17 @@ class Profile extends Model
     protected $fillable = [
         'user_id',
         'first_name',
-        'last_name'
+        'last_name',
+        'phone',
+        'location',
+        'bio',
     ];
 
     public function getFullNameAttribute(){
         return $this->last_name." ".$this->first_name;
+    }
+
+    public function user(){
+        return $this->hasOne('App\Models\User');
     }
 }
