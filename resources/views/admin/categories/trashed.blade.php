@@ -1,4 +1,3 @@
-
 @extends('layouts.admin')
 
 @section('title')
@@ -9,14 +8,13 @@
 
 <div style="margin-bottom: 10px" class="row">
     <div class="col-lg-12">
-        <strong>{{$subtitle}}</strong> <a href="{{route('admin.posts.create')}}" class="btn btn-success float-right">Add new posts</a>
-        <a href="{{route('admin.posts.index')}}" class="btn btn-secondary float-right mr-1">Go back</a>
+        <strong>{{$subtitle}}</strong> <a href="{{route('admin.categories.index')}}" class="btn btn-secondary float-right">Go back</a>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h2>posts List</h2>
+        <h2>Categories Trashed List</h2>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -25,24 +23,24 @@
                     <tr>
                         <th width=10></th>
                         <th>#</th>
-                        <th>Title</th>
+                        <th>Name</th>
                         <th>Created at</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($posts as $post)
-                        <tr data-entry-id="{{$post->id}}">
+                    @foreach($categories as $category)
+                        <tr data-entry-id="{{$category->id}}">
                             <td></td>
-                            <td><strong>{{$post->id ?? ''}}</strong></td>
-                            <td>{{$post->title ?? ''}}</td>
-                            <th>{{$post->deleted_at ?? ''}}</th>
+                            <td><strong>{{$category->id ?? ''}}</strong></td>
+                            <td>{{$category->name ?? ''}}</td>
+                            <th>{{$category->deleted_at ?? ''}}</th>
                             <td>
-                                <form method="POST" action="{{route('admin.posts.restore', $post->id)}}" style="display:inline-block">
+                                <form method="POST" action="{{route('admin.categories.restore', $category->id)}}" style="display:inline-block">
                                     @csrf
                                     <button class="btn btn-xs btn-outline-primary" type="submit">Restore</button>
                                 </form>
-                                <form method="POST" action="{{route('admin.posts.force', $post->id)}}" style="display:inline-block">
+                                <form method="POST" action="{{route('admin.categories.force', $category->id)}}" style="display:inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-xs btn-outline-danger" type="submit">Delete</button>
@@ -53,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        {{ $posts->links() }}
+        {{$categories->links()}}
     </div>
 </div>
 

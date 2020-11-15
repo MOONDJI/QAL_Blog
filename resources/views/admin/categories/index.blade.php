@@ -9,6 +9,7 @@
 <div style="margin-bottom: 10px" class="row">
     <div class="col-lg-12">
         <strong>{{$subtitle}}</strong> <a href="{{route('admin.categories.create')}}" class="btn btn-success float-right">Add new categories</a>
+        <a href="{{route('admin.categories.trashed')}}" class="btn btn-danger float-right mr-1">Trashed categories</a>
     </div>
 </div>
 
@@ -49,6 +50,7 @@
                 </tbody>
             </table>
         </div>
+        {{$categories->links()}}
     </div>
 </div>
 

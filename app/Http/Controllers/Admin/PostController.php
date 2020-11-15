@@ -42,7 +42,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = DB::table('categories')->orderBy('id', 'desc')->get();
+        // $categories = DB::table('categories')->orderBy('id', 'desc')->get();
+        $categories = Category::all()->pluck('name', 'id');
         return view('admin.posts.create', compact('categories'));
     }
 
@@ -54,16 +55,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('posts')->insert([
-            'title' => $request['title'],
-            'content' => $request['content'],
-            'category_id' => $request['category'],
-            'user_id' => 1,
-            'created_at' => now()
-        ]);
+        // DB::table('posts')->insert([
+        //     'title' => $request['title'],
+        //     'content' => $request['content'],
+        //     'category_id' => $request['category'],
+        //     'user_id' => 1,
+        //     'created_at' => now()
+        // ]);
 
         // $post->create_at = "2020-11-11 20:20:20";
         // $post->save(['timestamp' => false]);
+
+        Post::create([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'category_id' => $request['category_id'],
+            'user_id' => 1
+        ]);
 
         return redirect(route('admin.posts.index'));
     }
@@ -74,9 +82,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = DB::table('posts')->where('id', $id)->first(); //более правильный по sql запросу
+        // $post = DB::table('posts')->where('id', $id)->first(); //более правильный по sql запросу
         // $post = DB::table('posts')->find($id);
         return view('admin.posts.show', compact('post'));
     }
@@ -87,11 +95,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        $categories = DB::table('categories')->orderBy('id', 'desc')->get();
-        $post = DB::table('posts')->where('id', $id)->first();
+        // $categories = DB::table('categories')->orderBy('id', 'desc')->get();
+        // $post = DB::table('posts')->where('id', $id)->first();
+        // return view('admin.posts.edit', compact('categories', 'post'));
+        $categories = Category::all()->pluck('name', 'id');
         return view('admin.posts.edit', compact('categories', 'post'));
+        // ->withCategories($categories)->withPost($post);
     }
 
     /**
@@ -101,15 +112,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        DB::table('posts')->where('id', $id)
-        ->update([
+        $post->update([
             'title' => $request['title'],
             'content' => $request['content'],
             'category_id' => $request['category'],
             'updated_at' => now()
-        ]);
+            ]);
+        // DB::table('posts')->where('id', $id)
+        // ->update([
+        //     'title' => $request['title'],
+        //     'content' => $request['content'],
+        //     'category_id' => $request['category'],
+        //     'updated_at' => now()
+        // ]);
 
         return redirect(route('admin.posts.index'));
     }
@@ -139,13 +156,21 @@ class PostController extends Controller
 
     public function restore($id)
     {
-        // $title="Posts";
-        // $subtitle="Menagement trashed posts";
-        // $posts = Post::onlyTrashed()->paginate(5);
         Post::withTrashed()
         ->where('id', $id)
-        ->first();
+        ->first()
+        ->restore();
 
-        return view('admin.posts.trashed', compact('posts', 'title', 'subtitle'));
+        return redirect(route('admin.posts.index'));
+    }
+
+    public function force($id)
+    {
+        Post::withTrashed()
+        ->where('id', $id)
+        ->first()
+        ->forceDelete();
+
+        return redirect(route('admin.posts.index'));
     }
 }

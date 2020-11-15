@@ -33,6 +33,10 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
     Route::post('posts/restore/{id}', 'PostController@restore')->name('posts.restore');
     Route::delete('posts/force/{id}', 'PostController@force')->name('posts.force');
 
+    Route::get('categories/trashed', 'CategoryController@trashed')->name('categories.trashed');
+    Route::post('categories/restore/{id}', 'CategoryController@restore')->name('categories.restore');
+    Route::delete('categories/force/{id}', 'CategoryController@force')->name('categories.force');
+
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
     Route::resource('users', 'UserController');

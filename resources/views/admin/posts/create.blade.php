@@ -14,9 +14,9 @@
             </tr>
             <tr>
                 <th><label for="category">Category</label></th>
-                <th><select name="category" id="category">
-                        @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                <th><select name="category_id" id="category_id">
+                        @foreach($categories as $id => $category)
+                            <option value="{{$id}}">{{$category}}</option>
                         @endforeach
                     </select>
                 </th>
@@ -27,3 +27,8 @@
         </table>
     </form>
 </div>
+
+
+ {{-- @foreach($categories as $i => $category)
+    <p> {{$i}} => {{$category}} </p>
+@endforeach --}}

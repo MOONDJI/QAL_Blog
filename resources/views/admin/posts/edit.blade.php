@@ -16,11 +16,11 @@
             <tr>
                 <th><label for="category">Category</label></th>
                 <th><select name="category" id="category">
-                        @foreach($categories as $category)
-                            @if($category->id == $post->category_id)
-                                <option selected value="{{$category->id}}">{{$category->name}}</option>
+                        @foreach($categories as $id => $category)
+                            @if($id == $post->category_id)
+                                <option selected value="{{$id}}">{{$category}}</option>
                             @else
-                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                <option value="{{$id}}">{{$category}}</option>
                             @endif
                         @endforeach
                     </select>
