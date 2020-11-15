@@ -26,7 +26,8 @@ class UserController extends Controller
     {
         $title = "Admin";
         $subtitle = "Users";
-        $users = DB::table('users')->get();
+        // $users = DB::table('users')->get();
+        $users = User::all();
         return view('admin.users.index', compact('users', 'title', 'subtitle'));
     }
 
@@ -37,7 +38,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
