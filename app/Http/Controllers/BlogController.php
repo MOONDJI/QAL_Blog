@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\Post;
 
 class BlogController extends Controller
 {
@@ -16,16 +17,50 @@ class BlogController extends Controller
     public function index()
     {
         $title = "Blog Page";
-        $posts = DB::table('posts')
-        ->join('categories', 'categories.id', '=', 'posts.category_id')
-        ->join('users', 'users.id', '=', 'posts.user_id')
-        ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
+        // $posts = DB::table('posts')
+        // ->join('categories', 'categories.id', '=', 'posts.category_id')
+        // ->join('users', 'users.id', '=', 'posts.user_id')
+        // ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
+        // ->get();
+
+        // $categories = DB::table('categories')->get();
+
+        // $posts = Post::where('status', 1)
+        // ->with('category')
+        // ->with('user')
+        // ->get();
+
+        $posts = Post::where('id', 1)
+        ->with('user')
+        ->with('category')
+        ->get();
+        // $posts = Post::all();
+        // return dd($post);
+        return view('blog.index', compact('title', 'posts'));
+    }
+
+    public function postsByUser($id)
+    {
+        $title = "Blog Page";
+        $posts = Post::where('user_id', $id)->with('user')->with('category')->get();
+
+        // dd($posts);
+        return view('blog.index', compact('title', 'posts'));
+    }
+
+    public function postsByCategory($id)
+    {
+        $title = "Blog Page";
+        $posts= Post::where('category_id', $id)
+        ->with('user')
+        ->with('category')
+        ->orderBy('created_at', 'desc')
         ->get();
 
-        $categories = DB::table('categories')->get();
-
-        return view('blog.index', compact('title', 'posts', 'categories'));
+        // dd($posts);
+        return view('blog.index', compact('title', 'posts'));
     }
+
 
     /**
      * Display the specified resource.
@@ -33,17 +68,18 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showPost($id)
+    public function showPost(Post $post)
     {
         $title = "Blog Post Page";
-        $post = DB::table('posts')
-        ->join('categories', 'categories.id', '=', 'posts.category_id')
-        ->join('users', 'users.id', '=', 'posts.user_id')
-        ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
-        ->where('posts.id', $id)
-        ->first();
-
-        return view('blog.showPost', compact('title', 'post'));
+        // $post = DB::table('posts')
+        // ->join('categories', 'categories.id', '=', 'posts.category_id')
+        // ->join('users', 'users.id', '=', 'posts.user_id')
+        // ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
+        // ->where('posts.id', $id)
+        // ->first();
+        $post->with('tags')->with('categories');
+        dd($post);
+        // return view('blog.showPost', compact('title', 'post'));
     }
 
     /**

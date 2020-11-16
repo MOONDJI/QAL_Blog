@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\{Category, Post};
+use App\Models\{Category, Post, Tag};
 
 class PostController extends Controller
 {
@@ -42,9 +42,12 @@ class PostController extends Controller
      */
     public function create()
     {
+        $title="Post";
+        $subtitle="Create post";
         // $categories = DB::table('categories')->orderBy('id', 'desc')->get();
         $categories = Category::all()->pluck('name', 'id');
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all()->pluck('name', 'id');
+        return view('admin.posts.create', compact('categories', 'tags', 'title', 'subtitle'));
     }
 
     /**
@@ -66,12 +69,13 @@ class PostController extends Controller
         // $post->create_at = "2020-11-11 20:20:20";
         // $post->save(['timestamp' => false]);
 
-        Post::create([
+        $post = Post::create([
             'title' => $request['title'],
             'content' => $request['content'],
             'category_id' => $request['category_id'],
             'user_id' => 1
         ]);
+        $post->tags()->sync($request->input('tags', []));
 
         return redirect(route('admin.posts.index'));
     }
@@ -139,6 +143,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $post->tags()->detach();
         $post->delete();
         // DB::table('posts')->where('id', $id)->delete();
 

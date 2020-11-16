@@ -32,7 +32,7 @@ class CategoryController extends Controller
     public function create()
     {
         $title = "Category";
-        $subtitle = "Edit categiry";
+        $subtitle = "Create category";
         return view('admin.categories.create', compact('title', 'subtitle'));
     }
 
@@ -121,7 +121,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         // DB::table('categories')->delete($id);
-        $category->delete();
+        $category->posts()->delete();
         return redirect(route('admin.categories.index'));
     }
 

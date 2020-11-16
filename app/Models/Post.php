@@ -31,7 +31,7 @@ class Post extends Model
         'status',
         'category_id',
         'user_id',
-        'content'
+        'content',
     ]; //нужно для массового заполнение данных, например при вызове функциий save или update, тогда можно передавать все тело запроса а не отдельные поля
 
     protected $quarded = [
@@ -53,4 +53,16 @@ class Post extends Model
     // {
     //     return 'U';
     // }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function category(){
+        return $this->belongsTo('App\Models\Category');
+    }
+
+    public function tags(){
+        return $this->belongsToMany('App\Models\Tag');
+    }
 }

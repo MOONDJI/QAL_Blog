@@ -23,8 +23,10 @@ Route::get('/main', function () {
 
 Route::namespace('App\Http\Controllers')->name('blog.')->prefix('blog')->group(function(){
     Route::get('main', 'BlogController@index')->name('main');
-    Route::get('post/{id}', 'BlogController@showPost')->name('post');
-    Route::get('category/{id}', 'BlogController@showCategory')->name('category');
+    Route::get('post/{post}', 'BlogController@showPost')->name('post');
+    Route::get('posts/user/{id}', 'BlogController@postsByUser')->name('posts.user');
+    Route::get('posts/category/{id}', 'BlogController@postsByCategory')->name('posts.category');
+    Route::get('category/{category}', 'BlogController@showCategory')->name('category');
 });
 
 Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')->group(function(){
@@ -40,6 +42,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')-
     Route::resource('posts', 'PostController');
     Route::resource('categories', 'CategoryController');
     Route::resource('users', 'UserController');
+    Route::resource('tags', 'TagController');
 });
 
 Route::resource('profiles', 'App\Http\Controllers\ProfileController');
