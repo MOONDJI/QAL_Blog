@@ -68,18 +68,18 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showPost(Post $post)
+    public function showPost($id)
     {
         $title = "Blog Post Page";
-        // $post = DB::table('posts')
-        // ->join('categories', 'categories.id', '=', 'posts.category_id')
-        // ->join('users', 'users.id', '=', 'posts.user_id')
-        // ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
-        // ->where('posts.id', $id)
-        // ->first();
-        $post->with('tags')->with('categories');
-        dd($post);
-        // return view('blog.showPost', compact('title', 'post'));
+        $post = DB::table('posts')
+        ->join('categories', 'categories.id', '=', 'posts.category_id')
+        ->join('users', 'users.id', '=', 'posts.user_id')
+        ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
+        ->where('posts.id', $id)
+        ->first();
+        // $post->with('tags')->with('categories');
+        // dd($post);
+        return view('blog.showPost', compact('title', 'post'));
     }
 
     /**
