@@ -54,6 +54,40 @@
                     @endforeach
                 </select>
             </div>
+
+            <div class="file-upload">
+                <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+                <div class="image-upload-wrap">
+                  <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                  <div class="drag-text">
+                    <h3>Drag and drop a file or select add Image</h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <img class="file-upload-image" src="#" alt="your image" />
+                  <div class="image-title-wrap">
+                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                  </div>
+                </div>
+            </div>
+
+            {{-- <div class="form-group">
+                <div class="uploader">
+                    <input type="file" id="file-upload" name="cover" accept="image/*">
+                    <label id="file-drag" for="file-upload">
+                        <img id="file-image" src="#" alt="Preview" class="hidden">
+                        <div id="start">
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            <div>Select some file</div>
+                            <div id="timage" class="hidden">Pleas select an image</div>
+                            <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+                            <br>
+                            <span class="text-danger">{{$errors->first('cover')}}</span>
+                        </div>
+                    </label>
+                </div>
+            </div> --}}
+
             <div>
                 <input class="btn btn-danger" type="submit" value="save">
                 <a class="btn btn-outline-secondary" href="{{ url()->previous() }}">

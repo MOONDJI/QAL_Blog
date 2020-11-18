@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Post extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes, Sluggable;
     // protected $table = 'posts';
     // protected $primaryKey = 'id'; //не задавать если оно так по умолчанию
     // protected $keyType = "string"; //позволяет задать другой тип данных для primaryKey (по умолчанию integer)
@@ -32,6 +32,7 @@ class Post extends Model
         'category_id',
         'user_id',
         'content',
+        'cover',
     ]; //нужно для массового заполнение данных, например при вызове функциий save или update, тогда можно передавать все тело запроса а не отдельные поля
 
     protected $quarded = [
@@ -64,5 +65,22 @@ class Post extends Model
 
     public function tags(){
         return $this->belongsToMany('App\Models\Tag');
+    }
+
+    public function getShortAttribute(){
+        return substr($this->content, 0, 30).'...';
+    }
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(){
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

@@ -30,9 +30,9 @@ class BlogController extends Controller
         // ->with('user')
         // ->get();
 
-        $posts = Post::where('id', 1)
-        ->with('user')
+        $posts = Post::with('user')
         ->with('category')
+        ->with('tags')
         ->get();
         // $posts = Post::all();
         // return dd($post);
@@ -68,15 +68,29 @@ class BlogController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showPost($id)
+    public function showPost($slug)
     {
+        if(is_numeric($slug)){
+            $post = Post::findOrFail($slug)
+            ->with('user')
+            ->with('category')
+            ->with('tags')
+            ->firstOrFail();
+            return redirect(route('blog.post', $post->slug), 301);
+        }
+
         $title = "Blog Post Page";
-        $post = DB::table('posts')
-        ->join('categories', 'categories.id', '=', 'posts.category_id')
-        ->join('users', 'users.id', '=', 'posts.user_id')
-        ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
-        ->where('posts.id', $id)
-        ->first();
+        $post = Post::whereSlug($slug)
+        ->with('user')
+        ->with('category')
+        ->with('tags')
+        ->firstOrFail();
+        // $post = DB::table('posts')
+        // ->join('categories', 'categories.id', '=', 'posts.category_id')
+        // ->join('users', 'users.id', '=', 'posts.user_id')
+        // ->select('posts.*', 'categories.name AS categoryname', 'users.name AS username')
+        // ->where('posts.id', $id)
+        // ->first();
         // $post->with('tags')->with('categories');
         // dd($post);
         return view('blog.showPost', compact('title', 'post'));

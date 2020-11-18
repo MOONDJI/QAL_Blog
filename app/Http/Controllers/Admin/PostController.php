@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\{Category, Post, Tag};
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class PostController extends Controller
 {
@@ -79,6 +82,8 @@ class PostController extends Controller
 
         return redirect(route('admin.posts.index'));
     }
+
+
 
     /**
      * Display the specified resource.

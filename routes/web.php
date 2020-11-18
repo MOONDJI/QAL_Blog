@@ -23,7 +23,7 @@ Route::get('/main', function () {
 
 Route::namespace('App\Http\Controllers')->name('blog.')->prefix('blog')->group(function(){
     Route::get('main', 'BlogController@index')->name('main');
-    Route::get('post/{post}', 'BlogController@showPost')->name('post');
+    Route::get('post/{slug}', 'BlogController@showPost')->name('post');
     Route::get('posts/user/{id}', 'BlogController@postsByUser')->name('posts.user');
     Route::get('posts/category/{id}', 'BlogController@postsByCategory')->name('posts.category');
     Route::get('category/{category}', 'BlogController@showCategory')->name('category');
