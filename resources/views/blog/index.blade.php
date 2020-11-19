@@ -9,10 +9,12 @@
             <p>Created at: <strong>{{$post->created_at}}</strong> in category: <strong><a href="{{route('blog.posts.category', $post->category->id)}}">{{$post->category->name}}</a></strong> by <strong>{{$post->user->name ?? ''}}</strong></p>
             <p>Authoor: <a href="{{route('blog.posts.user', $post->user->id ?? '')}}"><strong>{{$post->user->profile->full_name ?? ''}}</strong></a></p>
             <p>{{$post->short}}</p>
+            <img src="{{asset('storage/covers/blog/thumbnail/'.$post->cover)}}" alt="">
         </div>
         {{-- <div>
             {{$post->content}}
         </div> --}}
+        <br>
         <a href="{{route('blog.post', $post->slug)}}"><button>Read more</button></a>
     </div>
     @endforeach

@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\{Category, Post, Tag};
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Image;
+use Intervention\Image\Facades\Image;
+// use Illuminate\Support\Facades\Image;
+// use Image;
 
 class PostController extends Controller
 {
@@ -72,18 +74,35 @@ class PostController extends Controller
         // $post->create_at = "2020-11-11 20:20:20";
         // $post->save(['timestamp' => false]);
 
+        // dd($request);
         $post = Post::create([
             'title' => $request['title'],
             'content' => $request['content'],
             'category_id' => $request['category_id'],
-            'user_id' => 1
+            'user_id' => 1,
+            'cover' => $this->uploadImage($request->file('cover')),
         ]);
         $post->tags()->sync($request->input('tags', []));
 
         return redirect(route('admin.posts.index'));
     }
 
+    public function uploadImage(UploadedFile $file)
+    {
+        $img = Image::make($file);
+        $filename = time().'.'.$file->getClientOriginalName();
+        $originalPath = 'app/public/covers/blog';
 
+        $img->resize(520, 250, function($constraint) {
+            $constraint->aspectRatio();
+        })->save(storage_path($originalPath).'/'.$filename);
+
+        $img->resize(250, 125, function($constraint) {
+            $constraint->aspectRatio();
+        })->save(storage_path($originalPath).'/thumbnail/'.$filename);
+
+        return $filename;
+    }
 
     /**
      * Display the specified resource.
@@ -109,8 +128,13 @@ class PostController extends Controller
         // $categories = DB::table('categories')->orderBy('id', 'desc')->get();
         // $post = DB::table('posts')->where('id', $id)->first();
         // return view('admin.posts.edit', compact('categories', 'post'));
+
+        $title = "Post";
         $categories = Category::all()->pluck('name', 'id');
-        return view('admin.posts.edit', compact('categories', 'post'));
+        $tags = Tag::all()->pluck('name', 'id');
+        $post->load('tags');
+        return view('admin.posts.edit', compact('categories', 'tags', 'post', 'title'));
+        // return dd($post);
         // ->withCategories($categories)->withPost($post);
     }
 
@@ -123,12 +147,17 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // dd($request);
+
         $post->update([
             'title' => $request['title'],
             'content' => $request['content'],
-            'category_id' => $request['category'],
-            'updated_at' => now()
+            'category_id' => $request['category_id'],
+            'updated_at' => now(),
+            'cover' => $this->uploadImage($request->file('cover')),
             ]);
+
+        $post->tags()->sync($request->input('tags', []));
         // DB::table('posts')->where('id', $id)
         // ->update([
         //     'title' => $request['title'],

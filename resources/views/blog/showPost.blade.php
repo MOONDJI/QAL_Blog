@@ -16,6 +16,9 @@
         {{$post->content}}
     </div>
     <div>
+        <img src="{{asset('storage/covers/blog/'.$post->cover)}}" alt="">
+    </div>
+    <div>
         <a href="{{route('blog.main')}}"><button>Go back</button></a>
     </div>
 </div>

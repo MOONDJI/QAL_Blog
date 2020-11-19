@@ -39,7 +39,7 @@
                             <th>{{$post->created_at ?? ''}}</th>
                             <td>
                                 <a class="btn btn-xs btn-outline-primary" href="{{route('admin.posts.show', $post->id)}}">View</a>
-                                <a class="btn btn-xs btn-outline-warning" href="{{route('admin.posts.edit', $post->id)}}">Edit</a>
+                                <a class="btn btn-xs btn-outline-warning" href="{{route('admin.posts.edit', $post)}}">Edit</a>
                                 <form method="POST" action="{{route('admin.posts.destroy', $post->id)}}" style="display:inline-block", onsubmit="return confirm('Are You Sure ?')">
                                     @csrf
                                     @method('DELETE')
